@@ -15,7 +15,7 @@ git clone https://github.com/alishi973/grpc-mock-server
     }
 }
 ```
-4. Install dependecy `yarn install` or `npm install
+4. Install dependecy `yarn install` or `npm install`
 5. Run server with `npm start` or `yarn start`
 
 Now gRPC mocked server is ready on port `50051` and proxified server for web application are up on `8080` ports on your machine.

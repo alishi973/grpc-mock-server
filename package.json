@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "prestart": "grpcwebproxy.exe --backend_addr=localhost:50051 --run_tls_server=false --backend_addr=localhost:50051 --allowed_origins=http://localhost:3000"
+    "start": "concurrently \"nodemon index.js\" \"npm run proxy:start\"",
+    "proxy:start": "grpcwebproxy.exe --backend_addr=localhost:50051 --run_tls_server=false --backend_addr=localhost:50051 --allowed_origins=http://localhost:3000"
   },
   "keywords": [],
   "author": "Ali Shirzad",
@@ -15,5 +15,9 @@
     "@grpc/grpc-js": "^1.4.4",
     "@grpc/proto-loader": "^0.6.6",
     "protobufjs": "^6.11.2"
+  },
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "nodemon": "^2.0.15"
   }
 }

@@ -5,9 +5,11 @@ const fs = require("fs");
 
 const MOCK_SERVER_ADDRESS = "127.0.0.1:50051";
 const MOCKED_JSON_FILE = "./mock-response.json";
-const protofileAddress = "./proto/user_service.proto";
+const protoDirectory = "./proto";
 
 const mockedData = JSON.parse(fs.readFileSync(MOCKED_JSON_FILE));
+
+const protoFiles = fs.readdirSync(protoDirectory);
 
 const options = {
   keepCase: true,
@@ -19,30 +21,36 @@ const options = {
 
 const server = new grpc.Server();
 
-// Can use with foreach for bulk files
-const loadedProtoFile = protoLoader.loadSync(protofileAddress);
+protoFiles.forEach((eachService) => {
+  const fullProtoAddress = `${protoDirectory}/${eachService}`;
 
-const service = grpc.loadPackageDefinition(loadedProtoFile, options);
+  const loadedProtoFile = protoLoader.loadSync(fullProtoAddress);
 
-const jsonProto = protobufjs.loadSync(protofileAddress).toJSON().nested;
+  const service = grpc.loadPackageDefinition(loadedProtoFile, options);
 
-const serviceName = Object.keys(jsonProto)[0];
+  const jsonProto = protobufjs.loadSync(fullProtoAddress).toJSON().nested;
 
-const serviceMethods = jsonProto[serviceName].methods;
+  const serviceName = Object.keys(jsonProto)[0];
 
-server.addService(
-  service[serviceName].service,
-  (() => {
-    const services = [];
-    for (const method in serviceMethods) {
-      const responseTypeName = serviceMethods[method].responseType;
-      services[method] = (_, res) => {
-        res(null, mockedData[responseTypeName] || {});
-      };
-    }
-    return services;
-  })()
-);
+  const serviceMethods = jsonProto[serviceName].methods;
+
+  if (!serviceMethods) return;
+
+  server.addService(
+    service[serviceName].service,
+    (() => {
+      const services = [];
+      for (const method in serviceMethods) {
+        const responseTypeName = serviceMethods[method].responseType;
+        services[method] = (_, res) => {
+          res(null, mockedData[responseTypeName] || {});
+        };
+      }
+      return services;
+    })()
+  );
+  console.log("Loaded ", eachService);
+});
 
 server.bindAsync(
   MOCK_SERVER_ADDRESS,

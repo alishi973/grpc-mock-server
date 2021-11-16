@@ -23,3 +23,14 @@ Now gRPC mocked server is ready on port `50051` and proxified server for web app
 Current proxy is cloned of [grpcwebproxy](https://github.com/improbable-eng/grpc-web/tree/master/go/grpcwebproxy).
 
 You can use [bloomRPC](https://github.com/bloomrpc/bloomrpc) for testing mocked server.
+
+
+### Important note for using on web app 🚧
+
+Remember to change `proxy:start` script on `package.json` and write your served web application address for `allowed_origins` parameter (default address is `http://localhost:3000`)
+
+### Last but not least
+
+For using this repo on non Windows OS, you need to replace `grpcwebproxy.exe` file with your relative reverse proxy and also change name of this file in `package.json` on `proxy:start` script (You can find [here](https://github.com/improbable-eng/grpc-web/releases)).
+
+and maybe need some change for unix file addressing.

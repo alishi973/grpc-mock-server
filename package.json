@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"nodemon index.js\" \"npm run proxy:start\"",
-    "proxy:start": "grpcwebproxy.exe --backend_addr=localhost:50051 --run_tls_server=false --backend_addr=localhost:50051 --allowed_origins=http://localhost:3000"
+    "proxy:start": "grpcwebproxy.exe --backend_addr=localhost:50051 --run_tls_server=false --allowed_origins=http://localhost:3000"
   },
   "keywords": [],
   "author": "Ali Shirzad",

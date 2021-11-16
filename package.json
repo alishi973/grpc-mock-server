@@ -4,7 +4,9 @@
   "description": "easy-to-use mock server for gRPC",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "prestart": "grpcwebproxy.exe --backend_addr=localhost:50051 --run_tls_server=false --backend_addr=localhost:50051 --allowed_origins=http://localhost:3000"
   },
   "keywords": [],
   "author": "Ali Shirzad",
